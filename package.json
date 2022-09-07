@@ -1,5 +1,5 @@
 {
-  "name": "forum-front-end-vue",
+  "name": "s3-forum-frontend-vue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.5",
     "jquery": "^3.4.1",
+    "moment": "^2.24.0",
     "popper.js": "^1.16.0",
     "uuid": "^9.0.0",
     "vue": "^2.6.11",
