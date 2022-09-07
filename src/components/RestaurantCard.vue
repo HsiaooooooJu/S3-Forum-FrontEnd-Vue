@@ -12,20 +12,21 @@
         </p>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-danger btn-border favorite mr-2">
+        <button v-if="restaurant.isFav" @click.stop.prevent="deleteFav" type="button"
+          class="btn btn-danger btn-border favorite mr-2">
           移除最愛
         </button>
-        <button type="button" class="btn btn-primary btn-border favorite mr-2">
+        <button v-else @click.stop.prevent="addFav" type="button" class="btn btn-primary btn-border favorite mr-2">
           加到最愛
         </button>
-        <button type="button" class="btn btn-danger like mr-2">
+        <button v-if="restaurant.isLiked" @click.stop.prevent="deleteLike" type="button"
+          class="btn btn-danger like mr-2">
           Unlike
         </button>
-        <button type="button" class="btn btn-primary like mr-2">
+        <button v-else @click.stop.prevent="addLike" type="button" class="btn btn-primary like mr-2">
           Like
         </button>
       </div>
-      iv>
     </div>
   </div>
 </template>
@@ -44,5 +45,31 @@ export default {
       restaurant: this.initialRestaurant
     }
   },
+  methods: {
+    addFav() {
+      this.restaurant = {
+        ...this.restaurant,  // 保留餐廳內原有資料
+        isFav: true
+      }
+    },
+    deleteFav() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFav: false
+      }
+    },
+    addLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: true
+      }
+    },
+    deleteLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: false
+      }
+    }
+  }
 }
 </script>
