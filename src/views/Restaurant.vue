@@ -2,6 +2,7 @@
   <div class="container py-5">
     <h1>餐廳描述頁</h1>
     <!-- 餐廳資訊頁 RestaurantDetail -->
+    <RestaurantDetail :initial-restaurant="restaurant" />
 
     <hr>
     <!-- 餐廳評論 RestaurantComments -->
