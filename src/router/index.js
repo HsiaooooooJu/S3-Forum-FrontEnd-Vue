@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'root',
-    redirect: '/restaurant'
+    redirect: '/restaurants'
   },
   {
     path: '/signin',
@@ -36,6 +36,15 @@ const routes = [
     path: '/restaurants/top',
     name: 'restaurants-tops',
     component: () => import('../views/RestaurantsTop.vue')
+  },
+  {
+    // 用 :id 定義動態路徑參數
+    // 之後在 Vue 物件裡，可以再透過 this.$route.params 取得網址上的 :id
+    // Vue 的路由進行匹配的順序是由上而下的，一旦成功匹配到路由，就不會再繼續往下去解析
+    // 若動態參數 :id 先出現，那麼傳入 feeds 和 tops 字串時，格式都能成功匹配，導致使用者無法進入 RestaurantsTops 和 RestaurantsFeeds 的頁面
+    path: '/restaurants/:id',
+    name: 'restaurant',
+    component: () => import('../views/Restaurant.vue')
   },
   {
     path: '/users/top',
