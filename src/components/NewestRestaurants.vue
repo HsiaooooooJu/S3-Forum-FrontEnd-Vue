@@ -25,10 +25,11 @@ small {
 
 <script>
 // 載入 moment
-import moment from 'moment'
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
   name: "NewestRestaurants",
+  mixins: [fromNowFilter],
   props: {
     restaurants: {
       // 告訴元件傳進來的資料型態是 Array
@@ -36,15 +37,6 @@ export default {
       // 資料是必要的，一定要傳進來
       required: true
     }
-  },
-  filters: {
-    fromNow(datetime) {
-      if (!datetime) {
-        return '-'
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow()
-    }
-  },
+  }
 }
 </script>

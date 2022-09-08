@@ -20,23 +20,17 @@
 </template>
 
 <script>
-import moment from 'moment'
+// 載入撰寫好的 mixin
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
+  // 透過 mixins 屬性將撰寫好的 mixin 放入
+  mixins: [fromNowFilter],
   name: 'NewestComments',
   props: {
     comments: {
       type: Array,
       required: true
-    }
-  },
-  filters: {
-    fromNow(datetime) {
-      if (!datetime) {
-        return '-'
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow()
     }
   },
 }

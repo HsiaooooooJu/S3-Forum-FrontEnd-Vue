@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import { fromNowFilter } from './../utils/mixins'
 
 // 只有管理員才能刪除使用者評論，因此只有管理員看到刪除按鈕
 // dummyUser 模擬登入使用者
@@ -42,6 +42,7 @@ const dummyUser = {
 
 export default {
   name: 'RestaurantComments',
+  mixins: [fromNowFilter],
   props: {
     restaurantComment: {
       type: Object,
@@ -52,15 +53,6 @@ export default {
     return {
       comment: this.restaurantComment,
       currentUser: dummyUser.currentUser
-    }
-  },
-  filters: {
-    fromNow(datetime) {
-      if (!datetime) {
-        return '-'
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow()
     }
   },
 }
