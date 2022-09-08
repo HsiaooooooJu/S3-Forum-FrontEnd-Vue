@@ -9,7 +9,9 @@
     <h2 class="my-4">
       所有評論：
     </h2>
-    <RestaurantComments :restaurant-comment="comment" v-for="comment in restaurantComments" :key="comment.id" />
+    <!-- 父元件監聽子元件事件 @after-delete-comment="afterDeleteComment"，若事件發生了，執行 afterDeleteComment -->
+    <RestaurantComments :restaurant-comment="comment" v-for="comment in restaurantComments" :key="comment.id"
+      @after-delete-comment="afterDeleteComment" />
 
     <!-- 新增評論 CreateComment -->
 
@@ -91,20 +93,39 @@ export default {
   },
   methods: {
     fetchRestaurant(restaurantId) {
-      console.log("fetchRestaurant id: ", restaurantId);
+      console.log("restaurantId: ", restaurantId);
+      const { restaurant, isFavorited, isLiked } = dummyData
+      const {
+        id,
+        name,
+        Category,
+        image,
+        opening_hours: openingHours,
+        tel,
+        address,
+        description,
+        Comments
+      } = restaurant
+
       this.restaurant = {
-        id: dummyData.restaurant.id,
-        name: dummyData.restaurant.name,
-        categoryName: dummyData.restaurant.Category.name,
-        image: dummyData.restaurant.image,
-        openingHours: dummyData.restaurant.opening_hours,
-        tel: dummyData.restaurant.tel,
-        address: dummyData.restaurant.address,
-        description: dummyData.restaurant.description,
-        isFav: dummyData.isFavorited,
-        isLiked: dummyData.isLiked
+        id,
+        name,
+        categoryName: Category ? Category.name : '未分類',
+        image,
+        openingHours,
+        tel,
+        address,
+        description,
+        isFavorited,
+        isLiked
       };
-      this.restaurantComments = dummyData.restaurant.Comments;
+      this.restaurantComments = Comments;
+    },
+    afterDeleteComment(commentId) {
+      // filter 會保留回傳值為 true 的陣列項目
+      this.restaurantComments = this.restaurantComments.filter(comment => {
+        comment.id !== commentId
+      })
     }
   },
   created() {

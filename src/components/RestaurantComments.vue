@@ -6,7 +6,8 @@
 
     <div>
       <blockquote class="blockquote mb-0">
-        <button v-if="currentUser.isAdmin" type="button" class="btn btn-danger float-right">
+        <button v-if="currentUser.isAdmin" @click.stop.prevent="handleDelBtn(comment.id)" type="button"
+          class="btn btn-danger float-right">
           Delete
         </button>
         <h3>
@@ -20,6 +21,7 @@
         </footer>
       </blockquote>
       <hr>
+
     </div>
   </div>
 </template>
@@ -55,5 +57,19 @@ export default {
       currentUser: dummyUser.currentUser
     }
   },
+  methods: {
+    // 事件的流程會從子元件 RestaurantComments 開始
+    // 但是負責整個頁面渲染的是 Restaurant，因此子元件需要通知父元件去更新畫面的狀態
+    handleDelBtn(commentId) {
+      console.log('handleDeleteButtonClick', commentId)
+
+      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
+      // 資料處理之後，使用 $emit 觸發一個叫做 after-delete-comment 的事件
+      // 並把 commentId 放進第二個參數，告訴父元件是哪一條評論被刪掉了
+
+      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
+      this.$emit('after-delete-comment', commentId)
+    }
+  }
 }
 </script>
