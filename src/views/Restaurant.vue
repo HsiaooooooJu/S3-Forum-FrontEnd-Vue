@@ -6,7 +6,10 @@
 
     <hr>
     <!-- 餐廳評論 RestaurantComments -->
-
+    <h2 class="my-4">
+      所有評論：
+    </h2>
+    <RestaurantComments :restaurant-comment="comment" v-for="comment in restaurantComments" :key="comment.id" />
 
     <!-- 新增評論 CreateComment -->
 
@@ -16,6 +19,7 @@
 
 <script>
 import RestaurantDetail from '../components/RestaurantDetail.vue'
+import RestaurantComments from '../components/RestaurantComments.vue'
 
 const dummyData = {
   "restaurant": {
@@ -64,6 +68,10 @@ const dummyData = {
 
 export default {
   name: "Restaurant",
+  components: {
+    RestaurantDetail,
+    RestaurantComments,
+  },
   data() {
     return {
       restaurant: {
@@ -102,10 +110,6 @@ export default {
   created() {
     const { id } = this.$route.params;
     this.fetchRestaurant(id);
-  },
-  components: {
-    RestaurantDetail,
-
   }
 }
 </script>
