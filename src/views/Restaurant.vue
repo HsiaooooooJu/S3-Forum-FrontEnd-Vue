@@ -10,18 +10,20 @@
       所有評論：
     </h2>
     <!-- 父元件監聽子元件事件 @after-delete-comment="afterDeleteComment"，若事件發生了，執行 afterDeleteComment -->
-    <RestaurantComments :restaurant-comment="comment" v-for="comment in restaurantComments" :key="comment.id"
+    <RestaurantComments :restaurant-comments="comment" v-for="comment in restaurantComments" :key="comment.id"
       @after-delete-comment="afterDeleteComment" />
 
     <!-- 新增評論 CreateComment -->
-
+    <CreateComments :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
 
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import RestaurantDetail from '../components/RestaurantDetail.vue'
 import RestaurantComments from '../components/RestaurantComments.vue'
+import CreateComments from '../components/CreateComments.vue'
 
 const dummyData = {
   "restaurant": {
@@ -68,11 +70,27 @@ const dummyData = {
   "isLiked": false
 }
 
+// currentUser 假資料
+// 在做前後分離的時候，後端會加開一組路由，讓前端可以在任何需要的時候直接取得登入使用者
+// 再到 data 設定 currentUser
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+    isAdmin: true
+  },
+  isAuthenticated: true
+}
+
+
 export default {
   name: "Restaurant",
   components: {
     RestaurantDetail,
     RestaurantComments,
+    CreateComments
   },
   data() {
     return {
@@ -88,12 +106,13 @@ export default {
         isFav: false,
         isLiked: false
       },
-      restaurantComments: []
+      restaurantComments: [],
+      currentUser: dummyUser.currentUser
     }
   },
   methods: {
     fetchRestaurant(restaurantId) {
-      console.log("restaurantId: ", restaurantId);
+      console.log('restaurantId', restaurantId)
       const { restaurant, isFavorited, isLiked } = dummyData
       const {
         id,
@@ -123,8 +142,24 @@ export default {
     },
     afterDeleteComment(commentId) {
       // filter 會保留回傳值為 true 的陣列項目
-      this.restaurantComments = this.restaurantComments.filter(comment => {
-        comment.id !== commentId
+      console.log(commentId)
+      this.restaurantComments = this.restaurantComments.filter(
+        comment => comment.id !== commentId
+      )
+    },
+    afterCreateComment(payload) {
+      // payload 通常就是指「放在物件裡的一包資料」
+      const { commentId, restaurantId, text } = payload
+      this.restaurantComments.push({
+        id: commentId,
+        RestaurantId: restaurantId,
+        User: {
+          id: this.currentUser.id,
+          name: this.currentUser.name
+        },
+        text,
+        // 直接抓當下的時間
+        createdAt: new Date()
       })
     }
   },

@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <h2 class="my-4">
-      所有評論：
-    </h2> -->
-
     <div>
       <blockquote class="blockquote mb-0">
         <button v-if="currentUser.isAdmin" @click.stop.prevent="handleDelBtn(comment.id)" type="button"
@@ -12,12 +8,12 @@
         </button>
         <h3>
           <router-link to="#">
-            {{comment.User.name}}
+            {{ comment.User.name }}
           </router-link>
         </h3>
-        <p>{{comment.text}}</p>
+        <p>{{ comment.text }}</p>
         <footer class="blockquote-footer">
-          {{comment.createdAt | fromNow}}
+          {{ comment.createdAt | fromNow }}
         </footer>
       </blockquote>
       <hr>
@@ -46,14 +42,15 @@ export default {
   name: 'RestaurantComments',
   mixins: [fromNowFilter],
   props: {
-    restaurantComment: {
+    restaurantComments: {
       type: Object,
       required: true
     }
   },
   data() {
     return {
-      comment: this.restaurantComment,
+      // return props 進來的資料
+      comment: this.restaurantComments,
       currentUser: dummyUser.currentUser
     }
   },
@@ -61,7 +58,7 @@ export default {
     // 事件的流程會從子元件 RestaurantComments 開始
     // 但是負責整個頁面渲染的是 Restaurant，因此子元件需要通知父元件去更新畫面的狀態
     handleDelBtn(commentId) {
-      console.log('handleDeleteButtonClick', commentId)
+      console.log('handleDelBtn', commentId)
 
       // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
       // 資料處理之後，使用 $emit 觸發一個叫做 after-delete-comment 的事件
