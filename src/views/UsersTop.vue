@@ -10,8 +10,8 @@
         <router-link to="#">
           <img :src="user.image" class="mb-3" width="140px" height="140px">
         </router-link>
-        <h2>{{user.name}}</h2>
-        <span class="badge badge-secondary">追蹤人數：{{ user.followerCount }}</span>
+        <h2>{{  user.name  }}</h2>
+        <span class="badge badge-secondary">追蹤人數：{{  user.followerCount  }}</span>
         <p class="mt-3">
           <button v-if="user.isFollowed" @click.stop.prevent="unfollow(user.id)" type="button" class="btn btn-danger">
             取消追蹤
@@ -85,6 +85,8 @@ export default {
   },
   methods: {
     fetchTopUsers() {
+      // 也可以寫 this.users = dummyData.users 就好
+      // 但是 followerCount 就要寫資料寫的 FollowerCount
       this.users = dummyData.users.map((user) => {
         return {
           id: user.id,
