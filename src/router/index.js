@@ -38,6 +38,11 @@ const routes = [
     component: () => import('../views/RestaurantsTop.vue')
   },
   {
+    path: '/restaurants/:id/dashboard',
+    name: 'restaurant-dashboard',
+    component: () => import('../views/RestaurantDashboard.vue')
+  },
+  {
     // 用 :id 定義動態路徑參數
     // 之後在 Vue 物件裡，可以再透過 this.$route.params 取得網址上的 :id
     // Vue 的路由進行匹配的順序是由上而下的，一旦成功匹配到路由，就不會再繼續往下去解析

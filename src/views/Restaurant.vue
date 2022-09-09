@@ -112,7 +112,6 @@ export default {
   },
   methods: {
     fetchRestaurant(restaurantId) {
-      console.log('restaurantId', restaurantId)
       const { restaurant, isFavorited, isLiked } = dummyData
       const {
         id,
