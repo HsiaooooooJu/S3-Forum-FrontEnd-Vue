@@ -7,8 +7,8 @@
           Delete
         </button>
         <h3>
-          <router-link to="#">
-            {{ comment.User.name }}
+          <router-link :to="{ name: 'user', params: { id: comment.User.id } }">
+            {{  comment.User.name  }}
           </router-link>
         </h3>
         <p>{{ comment.text }}</p>

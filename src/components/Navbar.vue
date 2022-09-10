@@ -19,8 +19,8 @@
         <!-- is user login? -->
         <!-- 為了不影響樣式、保持結構單純，使用不會產生成 HTML 的 <template> 標籤 -->
         <template v-if="isAuthenticated">
-          <router-link to="#" class="text-white mr-3">
-            {{ currentUser.name || '使用者' }} 您好
+          <router-link :to="{ name: 'user', params: { id: currentUser.id } }" class="text-white mr-3">
+            {{  currentUser.name || '使用者'  }} 您好
           </router-link>
           <button type="button" class="btn btn-sm btn-outline-success my-2 my-sm-0">
             登出
