@@ -3,7 +3,7 @@
     <!-- 後台導覽頁籤 AdminNav -->
     <AdminNav />
 
-    <router-link to="#" class="btn btn-primary mb-4">
+    <router-link to="/admin/restaurants/new" class="btn btn-primary mb-4">
       New Restaurant
     </router-link>
 
