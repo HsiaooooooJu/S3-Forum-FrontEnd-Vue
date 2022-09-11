@@ -12,7 +12,7 @@
     <div id="navbarSupportedContent" class="navbar-collapse collapse">
       <div class="ml-auto d-flex align-items-center">
         <!-- is user admin? -->
-        <router-link v-if="currentUser.isAdmin" to="#" class="text-white mr-3">
+        <router-link v-if="currentUser.isAdmin" to="/admin/restaurants" class="text-white mr-3">
           管理員後台
         </router-link>
 
@@ -35,7 +35,7 @@
 // seed data
 const dummyUser = {
   currentUser: {
-    id: null,
+    id: 1,
     name: '管理者',
     email: 'root@example.com',
     image: 'https://i.pravatar.cc/300',
@@ -60,7 +60,7 @@ export default {
     }
   },
   created() {
-    this.fetchUser
+    this.fetchUser()
   },
   methods: {
     fetchUser() {
