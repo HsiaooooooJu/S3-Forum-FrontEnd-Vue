@@ -96,7 +96,7 @@ export default {
         ...this.restaurant,
         id,
         name,
-        categoryName: Category.name,
+        categoryName: Category? Category.name : '未分類',
         image,
         openingHours,
         tel,

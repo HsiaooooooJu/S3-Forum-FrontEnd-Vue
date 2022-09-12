@@ -59,6 +59,7 @@
 </template>
 
 <script>
+
 const dummyData = {
   categories: [
     {
@@ -90,6 +91,23 @@ const dummyData = {
 
 export default {
   name: 'AdminRestaurantForm',
+  props: {
+    initialRestaurant: {
+      type: Object,
+      // 要為物件或陣列類型的資料設定預設值時，需要使用 () => ({}) 的寫法來回傳物件
+      // arrow function 回傳 object literal (key-value) 外層要再加一個小括號
+      // 或 () => { return {...}}
+      default: () => ({
+        name: '',
+        categoryId: '',
+        tel: '',
+        address: '',
+        description: '',
+        image: '',
+        openingHours: ''
+      })
+    }
+  },
   data() {
     return {
       categories: [],
@@ -107,6 +125,15 @@ export default {
   },
   created() {
     this.fetchCategories()
+    this.restaurant = {
+
+      // 先展開 data 裡的預設值，也就是空白表單
+      ...this.restaurant,
+
+      // 接著展開 props 裡的資料，也就是父層傳進來的資料
+      // 如果沒有資料，就調動 default 的回傳值，也是空白表單
+      ...this.initialRestaurant
+    }
   },
   methods: {
     fetchCategories() {
