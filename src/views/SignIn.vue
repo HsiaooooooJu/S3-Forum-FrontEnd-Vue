@@ -19,7 +19,7 @@
           placeholder="Password" autocomplete="current-password" required>
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button :disabled="isProcessing" class="btn btn-lg btn-primary btn-block mb-3" type="submit">
         Submit
       </button>
 
@@ -37,6 +37,10 @@
 </template>
 
 <script>
+/* eslint-disable */
+import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
+
 export default {
   name: 'SignIn',
   // Data must be a function to keep a component’s data separate for each initialization.
@@ -46,17 +50,54 @@ export default {
     // A function needs to be returned
     return {
       email: '',
-      password: ''
+      password: '',
+      isProcessing: false
     }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        emial: this.email,
+    handleSubmit(e) {
+      // 如果 email 或 password 為空，則使用 Toast 提示
+      // 然後 return 不繼續往後執行
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填入 Email 和 Password'
+        })
+        return
+      }
+
+      this.isProcessing = true
+
+      // 呼叫 authorizationAPI 裡的 signIn 方法，呼叫後會取得 Promise 物件
+      authorizationAPI.signIn({
+        email: this.email,
         password: this.password
+      }).then(response => {
+        // 取得 api 請求後的資料
+        // console.log('response: ', response)
+        const { data } = response
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        // 將 token 存放在 localStorage 內
+        localStorage.setItem('token', data.token)
+
+        // 成功登入後轉址到餐廳首頁
+        this.$router.push('/restaurants')
+      }).catch(error => {
+        // 將密碼欄位清空
+        this.password = ''
+        // 顯示錯誤提示
+        Toast.fire({
+          icon: 'warning',
+          title: '請確認您輸入了正確的帳號密碼'
+        })
+        // 因為登入失敗，所以要把按鈕狀態還原
+        this.isProcessing = false
+        console.log('error', error)
       })
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data', data)
     }
   }
 }
