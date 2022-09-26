@@ -11,14 +11,8 @@
     </div>
 
     <!-- 分頁標籤 RestaurantPagination -->
-    <RestaurantsPagination
-      v-if="totalPage.length > 1"
-      :current-page="currentPage"
-      :total-page="totalPage"
-      :category-id="categoryId"
-      :previous-page="previousPage"
-      :next-page="nextPage"
-    />
+    <RestaurantsPagination v-if="totalPage.length > 1" :current-page="currentPage" :total-page="totalPage"
+      :category-id="categoryId" :previous-page="previousPage" :next-page="nextPage" />
 
   </div>
 </template>
@@ -29,275 +23,9 @@ import RestaurantCard from '../components/RestaurantCard.vue';
 import RestaurantsNavPills from '../components/RestaurantsNavPills.vue'
 import RestaurantsPagination from '../components/RestaurantsPagination.vue'
 
-const dummyData = {
-  "restaurants": [
-    {
-      "id": 4,
-      "name": "Mr. Rusty Hilll",
-      "tel": "775.546.7738",
-      "address": "893 Gibson Way",
-      "opening_hours": "08:00",
-      "description": "Sunt consequatur aspernatur eum eaque consectetur ",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=89.16004556968416",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 3,
-      "Category": {
-        "id": 3,
-        "name": "義大利料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 6,
-      "name": "May Walker",
-      "tel": "901.595.3720 x786",
-      "address": "1804 Fannie Centers",
-      "opening_hours": "08:00",
-      "description": "Perferendis aut mollitia et. Quaerat dolor quas fu",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=57.48139402721577",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 1,
-      "Category": {
-        "id": 1,
-        "name": "中式料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 7,
-      "name": "Jordane Krajcik",
-      "tel": "(801) 768-7427",
-      "address": "2233 Blick Isle",
-      "opening_hours": "08:00",
-      "description": "Et eligendi quo maxime quod praesentium magni labo",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=30.024383303839365",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 3,
-      "Category": {
-        "id": 3,
-        "name": "義大利料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 8,
-      "name": "Rogelio Stamm",
-      "tel": "(893) 292-6072",
-      "address": "9895 Freddy Turnpike",
-      "opening_hours": "08:00",
-      "description": "Reiciendis laboriosam ut nemo.",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=94.39611636823813",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 5,
-      "Category": {
-        "id": 5,
-        "name": "素食料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 9,
-      "name": "Gardner DuBuque",
-      "tel": "393-801-6256 x99131",
-      "address": "4618 Bartell Isle",
-      "opening_hours": "08:00",
-      "description": "Numquam aut fugiat voluptas nostrum. Necessitatibu",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=5.61438914169945",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 3,
-      "Category": {
-        "id": 3,
-        "name": "義大利料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 10,
-      "name": "Hailee Hintz",
-      "tel": "(201) 774-8720",
-      "address": "614 Larkin Path",
-      "opening_hours": "08:00",
-      "description": "debitis",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=32.813832624134065",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 4,
-      "Category": {
-        "id": 4,
-        "name": "墨西哥料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 11,
-      "name": "Santino Muller",
-      "tel": "721.408.7009",
-      "address": "855 Strosin Ville",
-      "opening_hours": "08:00",
-      "description": "Quis nihil voluptatibus.\nQui doloribus neque sint ",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=5.366587449772187",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 3,
-      "Category": {
-        "id": 3,
-        "name": "義大利料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 12,
-      "name": "Emilie Koch",
-      "tel": "(930) 536-4651 x52312",
-      "address": "89201 Presley Overpass",
-      "opening_hours": "08:00",
-      "description": "impedit",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=72.52824074146105",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 2,
-      "Category": {
-        "id": 2,
-        "name": "日本料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 13,
-      "name": "Augustine Rutherford",
-      "tel": "742-670-9360 x39802",
-      "address": "891 Reagan Row",
-      "opening_hours": "08:00",
-      "description": "Facilis aperiam voluptas nemo voluptate id vero ut",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=94.53579399385697",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 3,
-      "Category": {
-        "id": 3,
-        "name": "義大利料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    },
-    {
-      "id": 14,
-      "name": "Glennie Trantow",
-      "tel": "(820) 255-0025",
-      "address": "6324 Kyleigh Divide",
-      "opening_hours": "08:00",
-      "description": "Sed velit distinctio est perferendis nisi voluptas",
-      "image": "https://loremflickr.com/320/240/restaurant,food/?random=14.901037749853652",
-      "viewCounts": 0,
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z",
-      "CategoryId": 2,
-      "Category": {
-        "id": 2,
-        "name": "日本料理",
-        "createdAt": "2022-08-01T03:06:34.000Z",
-        "updatedAt": "2022-08-01T03:06:34.000Z"
-      },
-      "isFavorited": false,
-      "isLiked": false
-    }
-  ],
-  "categories": [
-    {
-      "id": 1,
-      "name": "中式料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 2,
-      "name": "日本料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 3,
-      "name": "義大利料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 4,
-      "name": "墨西哥料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 5,
-      "name": "素食料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 6,
-      "name": "美式料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    },
-    {
-      "id": 7,
-      "name": "複合式料理",
-      "createdAt": "2022-08-01T03:06:34.000Z",
-      "updatedAt": "2022-08-01T03:06:34.000Z"
-    }
-  ],
-  "categoryId": "",
-  "page": 1,
-  "totalPage": [
-    1,
-    2,
-    3,
-    4,
-    5
-  ],
-  "prev": 1,
-  "next": 2
-}
+// STEP 1：透過 import 匯入剛剛撰寫好用來呼叫 API 的方法
+import restaurantsAPI from './../apis/restaurants'
+import { Toast } from './../utils/helpers'
 
 export default {
   name: 'Restaurants',
@@ -321,28 +49,68 @@ export default {
     }
   },
   methods: {
-    fetchRestaurants() {
-      const {
-        restaurants,
-        categories,
-        categoryId,
-        page,
-        totalPage,
-        prev,
-        next
-      } = dummyData
-      this.restaurants = restaurants
-      this.categories = categories
-      this.categoryId = categoryId
-      this.currentPage = page
-      this.totalPage = totalPage
-      this.previousPage = prev
-      this.nextPage = next
+    // STEP 2：將 fetchRestaurants 改成 async...await 的語法
+    // 並且可以帶入參數 page 與 categoryId
+    // 呼叫 API 後取得 response
+    async fetchRestaurants({ queryPage, queryCategoryId }) {
+      try {
+        const response = await restaurantsAPI.getRestaurants({
+          page: queryPage,
+          categoryId: queryCategoryId
+        })
+
+        // // 故意測試錯誤
+        // if (response.statusText === 'OK') {
+        //   throw new Error(response.statusText)
+        // }
+
+        // 透過解構賦值，將所需要的資料從 response.data 取出
+        const {
+          restaurants,
+          categories,
+          categoryId,
+          page,
+          totalPage,
+          prev,
+          next
+        } = response.data
+
+        // 將從伺服器取得的 data 帶入 Vue 內
+        this.restaurants = restaurants
+        this.categories = categories
+        this.categoryId = categoryId
+        this.currentPage = page
+        this.totalPage = totalPage
+        this.previousPage = prev
+        this.nextPage = next
+
+        // console.log('response', response)
+
+      } catch (error) {
+        console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳資料，請稍後再試'
+        })
+      }
     }
-    // this.restaurants = dummyData.restaurants
+  },
+  // 使用 beforeRouteUpdate 方法取得使用者路由變化
+  beforeRouteUpdate(to, from, next) {
+    // to - 使用者將要前往的路由 to: { query: {categoryId: '', page: 2} }
+    // from - 使用者來自哪個路由
+    // next - 表示繼續往下
+    // console.log('to', to)
+    // console.log('from', from)
+
+    const { page = '', categoryId = '' } = to.query
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
+    next()
   },
   created() {
-    this.fetchRestaurants()
+    // 取得動態路由資訊，確保 created 也有處理到 queryString 
+    const { page = '', categoryId = '' } = this.$route.query
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
   }
 }
 </script>
