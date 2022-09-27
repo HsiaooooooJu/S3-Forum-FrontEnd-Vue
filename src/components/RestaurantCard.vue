@@ -52,7 +52,6 @@ export default {
     async addFav(restaurantId) {
       try {
         const { data } = await usersAPI.addFav({ restaurantId })
-        console.log(this.restaurant)
         // 若請求過程有錯，則進到錯誤處理
         if(data.status !== 'success') {
           throw new Error(data.message)
