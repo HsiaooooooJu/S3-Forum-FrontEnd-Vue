@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import AdminRestaurantForm from './../components/AdminRestaurantForm.vue'
 
 const dummyData = {
@@ -55,7 +56,6 @@ export default {
       }
     },
     fetchRestaurant (restaurantId) {
-      console.log('fetchRestaurant id:', restaurantId)
       const { restaurant } = dummyData
       const {
         id,
