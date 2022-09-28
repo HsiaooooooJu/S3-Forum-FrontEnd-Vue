@@ -102,6 +102,14 @@ export default {
       isLoading: true
     }
   },
+  watch: {
+    initialRestaurant(newValue) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...newValue
+      }
+    }
+  },
   created() {
     this.fetchCategories()
     this.restaurant = {
@@ -117,11 +125,10 @@ export default {
   methods: {
     async fetchCategories() {
       try {
-        const { data } = await adminAPI.categories.get()
-        // if(data.status === 'error') {
-        //   throw new Error(data.message)
-        // }
-        // console.log(data)
+        const { data, status, statusText } = await adminAPI.categories.get()
+        if(status === 'error') {
+          throw new Error(statusText)
+        }
         this.categories = data.categories
         this.isLoading = false
       } catch(error) {

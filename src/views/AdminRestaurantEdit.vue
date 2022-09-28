@@ -1,34 +1,14 @@
 <template>
   <div class="container py-5">
-    <AdminRestaurantForm :initial-restaurant="restaurant" @after-submit="handleAfterSubmit" />
+    <AdminRestaurantForm :is-processing="isProcessing" :initial-restaurant="restaurant" @after-submit="handleAfterSubmit" />
   </div>
 </template>
 
 <script>
-/* eslint-disable */
 import AdminRestaurantForm from './../components/AdminRestaurantForm.vue'
 
-const dummyData = {
-  'restaurant': {
-    'id': 1,
-    'name': 'Laurence Reynolds',
-    'tel': '1-657-067-3756 x9782',
-    'address': '187 Kirlin Squares',
-    'opening_hours': '08:00',
-    'description': 'sit est mollitia',
-    'image': 'https://loremflickr.com/320/240/restaurant,food/?random=91.29816290184887',
-    'viewCounts': 1,
-    'createdAt': '2019-07-30T16:24:55.432Z',
-    'updatedAt': '2019-07-30T17:26:43.260Z',
-    'CategoryId': 3,
-    'Category': {
-      'id': 3,
-      'name': '義大利料理',
-      'createdAt': '2019-07-30T16:24:55.429Z',
-      'updatedAt': '2019-07-30T16:24:55.429Z'
-    }
-  }
-}
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
 
 export default {
   components: {
@@ -45,45 +25,80 @@ export default {
         description: '',
         image: '',
         openingHours: ''
-      }
+      },
+      isProcessing: false
     }
   },
   methods: {
-    handleAfterSubmit (formData) {
-      // 透過 API 將表單資料送到伺服器
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ': ' + value)
+    async handleAfterSubmit (formData) {
+      try {
+        this.isProcessing = true
+        const { data } = await adminAPI.restaurants.update({ 
+          restaurantId: this.restaurant.id, 
+          formData 
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.$router.push({ name: 'admin-restaurants' })
+
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新餐廳資料，請稍後再試'
+        })
       }
     },
-    fetchRestaurant (restaurantId) {
-      const { restaurant } = dummyData
-      const {
-        id,
-        name,
-        CategoryId: categoryId,
-        image,
-        opening_hours: openingHours,
-        tel,
-        address,
-        description
-      } = restaurant
-      this.restaurant = {
-        ...this.restaurant,
-        id,
-        name,
-        categoryId,
-        image,
-        openingHours,
-        tel,
-        address,
-        description
+    async fetchRestaurant (restaurantId) {
+      try {
+        const { data } = await adminAPI.restaurants.getDetail({ restaurantId })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        const {
+          id,
+          name,
+          tel,
+          address,
+          opening_hours: openingHours,
+          description,
+          image,
+          CategoryId: categoryId
+        } = data.restaurant
+        this.restaurant = {
+          ...this.restaurant,
+          id,
+          name,
+          tel,
+          address,
+          openingHours,
+          description,
+          image,
+          categoryId
+        }
+      } catch (error) {
+        console.error(error.message)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳資料，請稍後再試'
+        })
       }
-    }
+    },
   },
   created() {
     // 透過 this.$route.params 取得網址上的 id，才會知道現在編輯的是哪一筆餐廳資料
-    const {id} = this.$route.params
+    const { id } = this.$route.params
     this.fetchRestaurant(id)
+  },
+  // 監聽路由變化 : SPA 專案裡透過 JavaScript 來控制網址
+  // 網址的改變不會觸發 created 階段，也不會向後端發送新的請求
+  beforeRouteUpdate(to, from, next) {
+    const { id } = to.params
+    this.fetchRestaurant(id)
+    next()
   }
 }
 </script>
