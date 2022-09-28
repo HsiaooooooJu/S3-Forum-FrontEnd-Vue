@@ -31,8 +31,8 @@
           placeholder="Password" autocomplete="new-password" required>
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
-        Submit
+      <button :disabled="isProcessing" class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+        {{ isProcessing ? 'Processing...' : 'Submit' }}
       </button>
 
       <div class="text-center mb-3">
@@ -51,6 +51,9 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
+
 export default {
   name: 'SignUp',
   data() {
@@ -58,19 +61,57 @@ export default {
       name: '',
       email: '',
       password: '',
-      passwordCheck: ''
+      passwordCheck: '',
+      isProcessing: false
     }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck
-      })
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data', data)
+    async handleSubmit() {
+      try {
+        this.isProcessing = true
+        if (!this.name || !this.email || !this.password || !this.passwordCheck) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認已填寫所有欄位'
+          })
+          this.isProcessing = false
+          return
+        }
+
+        if (this.password !== this.passwordCheck) {
+          Toast.fire({
+            icon: 'warning',
+            title: '兩次輸入的密碼不同'
+          })
+          this.isProcessing = false
+          this.passwordCheck = ''
+          return
+        }
+
+        const { data } = await authorizationAPI.signUp({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordCheck: this.passwordCheck
+        })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: data.message
+        })
+        this.isProcessing = false
+
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'warning',
+          title: `無法註冊 - ${error.message}`
+        })
+      }
     }
   }
 }
