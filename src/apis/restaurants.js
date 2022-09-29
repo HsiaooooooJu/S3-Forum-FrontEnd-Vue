@@ -3,6 +3,11 @@ const getToken = () => localStorage.getItem('token')
 
 // http://localhost:8080/#/restaurants?page=1&category=5
 export default {
+  getRestaurant ({ restaurantId }) {
+    return apiHelper.get(`/restaurants/${restaurantId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
   getRestaurants({ page, categoryId }) {
     const searchParams = new URLSearchParams({ page, categoryId })
     return apiHelper.get(`/restaurants?${ searchParams.toString() }`, {

@@ -7,7 +7,7 @@
       </p>
     </div>
     <div class="col-lg-4">
-      <img class="img-responsive center-block" src="https://loremflickr.com/320/240/food,dessert,restaurant/"
+      <img class="img-responsive center-block" :src="restaurant.image | emptyImage"
         style="width: 250px;margin-bottom: 25px;">
       <div class="contact-info-wrap">
         <ul class="list-unstyled">
@@ -54,8 +54,11 @@
 <script>
 /* eslint-disable */
 
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
   name: 'RestaurantDetail',
+  mixins: [emptyImageFilter],
   props: {
     initialRestaurant: {
       type: Object,
@@ -65,6 +68,14 @@ export default {
   data() {
     return {
       restaurant: this.initialRestaurant
+    }
+  },
+  watch: {
+    initialRestaurant(newValue) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...newValue
+      }
     }
   },
   methods: {
