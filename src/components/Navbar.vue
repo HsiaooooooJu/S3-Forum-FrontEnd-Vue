@@ -32,46 +32,12 @@
 </template>
 
 <script>
-// seed data
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: '管理者',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import { mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
-  data() {
-    // Vue 會在沒有資料時使用此預設值
-    return {
-      currentUser: {
-        id: -1,
-        name: '',
-        email: '',
-        image: '',
-        isAdmin: false
-      },
-      isAuthenticated: false
-    }
-  },
-  created() {
-    this.fetchUser()
-  },
-  methods: {
-    fetchUser() {
-      // 用了 spread 運算子把兩組資料打開
-      // 在 key 值相同時，dummyUser.currentUser 會覆蓋之前的資料
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser.currentUser
-      }
-      this.isAuthenticated = dummyUser.isAuthenticated
-    }
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   }
 }
 </script>

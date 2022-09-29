@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue' // 所有的路由都匹配不到的情況
 import SignIn from '../views/SignIn.vue'
 import Restaurants from '../views/Restaurants.vue'
+import store from './../store'
 
 Vue.use(VueRouter)
 
@@ -113,6 +114,14 @@ const router = new VueRouter({
   // 透過 <router-link> 自動幫連結加上特定的 class 樣式
   linkExactActiveClass: 'active',
   routes
+})
+
+// 類似 beforeRouteUpdate，但 beforeEach 作用於整個專案
+// 只需要在 Vue Router 內定義一次，不需要在每個元件內分別定義
+router.beforeEach((to, from, next) => {
+  // 呼叫 actions 方法的關鍵字是 dispatch
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

@@ -86,6 +86,9 @@ export default {
         // 將 token 存放在 localStorage 內
         localStorage.setItem('token', data.token)
 
+        // 提交 mutation 事件 ('事件名稱', response 回來的 data)
+        this.$store.commit('setCurrentUser', data.user)
+
         // 成功登入後轉址到餐廳首頁
         this.$router.push('/restaurants')
 
