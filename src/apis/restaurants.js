@@ -23,5 +23,15 @@ export default {
     return apiHelper.get('/restaurants/top', {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  createComments(formData) {
+    return apiHelper.post('/comments', { ...formData }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  delComments({ commentId }) {
+    return apiHelper.delete(`/comments/${ commentId }`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

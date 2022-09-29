@@ -101,7 +101,6 @@ export default {
     },
     afterDeleteComment(commentId) {
       // filter 會保留回傳值為 true 的陣列項目
-      console.log(commentId)
       this.restaurantComments = this.restaurantComments.filter(
         comment => comment.id !== commentId
       )
