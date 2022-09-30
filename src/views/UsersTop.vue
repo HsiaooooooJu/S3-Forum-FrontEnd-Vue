@@ -55,7 +55,6 @@ export default {
     async fetchTopUsers() {
       try {
         const { data } = await usersAPI.getTopUsers()
-        console.log(data)
         // 也可以寫 this.users = data.users 就好
         // 但是 followerCount 就要寫資料寫的 FollowerCount
         this.users = data.users.map((user) => {

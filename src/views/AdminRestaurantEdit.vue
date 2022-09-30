@@ -38,7 +38,7 @@ export default {
           formData 
         })
 
-        if (data.status !== 'success') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
 
