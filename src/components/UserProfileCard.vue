@@ -2,7 +2,7 @@
   <div class="card mb-3">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img :src="user.image" width="300px" height="300px">
+        <img :src="user.image | emptyImage" width="300px" height="300px">
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -40,8 +40,13 @@
 
 <script>
 /* eslint-disable */
+import usersAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
   name: 'UserProfileCard',
+  mixins: [emptyImageFilter],
   props: {
     user: {
       type: Object,
@@ -62,11 +67,41 @@ export default {
     }
   },
   methods: {
-    follow(userId) {
-      this.isFollowed = true
+    async follow(userId) {
+      try {
+        const { data, status, statusText } = await usersAPI.following({ userId })
+        if(status === 'error') {
+          throw new Error(statusText)
+        }
+        this.isFollowed = true
+      } catch(error) {
+        Toast.fire({
+          icon: 'error',
+          title: ''
+        })
+      }
     },
-    unfollow(userId) {
-      this.isFollowed = false
+    async unfollow(userId) {
+      try {
+        const { data, status, statusText } = await usersAPI.unfollowing({ userId })
+        if(status === 'error') {
+          throw new Error(statusText)
+        }
+        this.isFollowed = false
+      } catch(error) {
+        Toast.fire({
+          icon: 'error',
+          title: ''
+        })
+      }
+    }
+  },
+  watch: {
+    initialIsFollowed(newValue) {
+      this.isFollowed = {
+        ...this.isFollowed,
+        ...newValue
+      }
     }
   }
 }
