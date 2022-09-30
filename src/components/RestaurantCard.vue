@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-6 col-lg-4">
     <div class="card mb-4">
-      <img class="card-img-top" :src="restaurant.image" alt="Card image cap" width="286px" height="180px">
+      <img class="card-img-top" :src="restaurant.image | emptyImage" alt="Card image cap" width="286px" height="180px">
       <div class="card-body">
         <p class="card-text title-wrap">
           <router-link :to="{name: 'restaurant', params: {id: restaurant.id}}">{{restaurant.name}}</router-link>
@@ -32,11 +32,14 @@
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
 export default {
   name: 'RestaurantCard',
+  mixins: [emptyImageFilter],
   props: {
     initialRestaurant: {
       type: Object,
@@ -67,7 +70,6 @@ export default {
           icon: 'error',
           title: '無法將餐廳加入最愛，請稍後再試'
         })
-        console.log('error', error)
       }
     },
     async deleteFav(restaurantId) {
@@ -85,13 +87,12 @@ export default {
           icon: 'error',
           title: '無法將餐廳移除最愛，請稍後再試'
         })
-        console.log('error', error)
       }
     },
     async addLike(restaurantId) {
       try {
         const { data } = await usersAPI.addLike({ restaurantId })
-        console.log(data)
+ 
         if(data.status === 'error') {
           throw new Error(data.message)
         }
