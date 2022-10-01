@@ -22,38 +22,24 @@ export default {
   // data - 要發送的資料，如果沒有則寫 null
   // config - 這裡可以把 token 帶到 headers 中
   addFav({ restaurantId }) {
-    return apiHelper.post(`/favorite/${restaurantId}`, null, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.post(`/favorite/${restaurantId}`, null)
   },
   delFav({ restaurantId }) {
-    return apiHelper.delete(`/favorite/${restaurantId}`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.delete(`/favorite/${restaurantId}`)
   },
   addLike({ restaurantId }) {
-    return apiHelper.post(`/like/${restaurantId}`, null, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.post(`/like/${restaurantId}`, null)
   },
   delLike({ restaurantId }) {
-    return apiHelper.delete(`/like/${restaurantId}`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.delete(`/like/${restaurantId}`)
   },
   getTopUsers() {
-    return apiHelper.get('/users/top', {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.get('/users/top')
   },
   following({ userId }) {
-    return apiHelper.post(`/following/${userId}`, null, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.post(`/following/${userId}`, null)
   },
   unfollowing ({ userId }) {
-    return apiHelper.delete(`/following/${userId}`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+    return apiHelper.delete(`/following/${userId}`)
   }
 }
