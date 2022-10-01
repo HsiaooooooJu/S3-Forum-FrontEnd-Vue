@@ -20,9 +20,9 @@
         <!-- 為了不影響樣式、保持結構單純，使用不會產生成 HTML 的 <template> 標籤 -->
         <template v-if="isAuthenticated">
           <router-link :to="{ name: 'user', params: { id: currentUser.id } }" class="text-white mr-3">
-            {{  currentUser.name || '使用者'  }} 您好
+            {{ currentUser.name || '使用者' }} 您好
           </router-link>
-          <button type="button" class="btn btn-sm btn-outline-success my-2 my-sm-0">
+          <button @click="logout" type="button" class="btn btn-sm btn-outline-success my-2 my-sm-0">
             登出
           </button>
         </template>
@@ -38,6 +38,12 @@ export default {
   name: 'Navbar',
   computed: {
     ...mapState(['currentUser', 'isAuthenticated'])
+  },
+  methods: {
+    logout() {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/signin')
+    }
   }
 }
 </script>
