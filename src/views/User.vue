@@ -62,7 +62,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([ 'currentUser' ])
+    ...mapState(['currentUser'])
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params
@@ -74,7 +74,7 @@ export default {
       try {
         const { data, status, statusText } = await usersAPI.get({ userId })
 
-        if(status === 'error') {
+        if (status === 'error') {
           throw new Error(statusText)
         }
 
@@ -108,8 +108,8 @@ export default {
         this.followings = followings
         this.followers = followers
         this.isFollowed = isFollowed
-        // console.log(data)
-      } catch(error) {
+
+      } catch (error) {
         Toast.fire({
           icon: 'error',
           title: '無法取得使用者資料，請稍後再試'
