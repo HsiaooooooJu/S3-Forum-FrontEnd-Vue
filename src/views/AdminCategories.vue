@@ -2,7 +2,6 @@
   <div class="container py-5">
     <!-- 1. 使用先前寫好的 AdminNav -->
     <AdminNav />
-
     <form class="my-4">
       <div class="form-row">
         <div class="col-auto">
@@ -15,7 +14,8 @@
         </div>
       </div>
     </form>
-    <table class="table">
+    <Spinner v-if="isLoading" />
+    <table v-else class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col" width="60">
@@ -70,22 +70,27 @@ import AdminNav from '@/components/AdminNav'
 import adminAPI from './../apis/admin'
 import { Toast } from './../utils/helpers'
 
+import Spinner from './../components/Spinner'
+
 export default {
   name: 'AdminCategories',
   components: {
-    AdminNav
+    AdminNav,
+    Spinner
   },
   data() {
     return {
       newCategoryName: '',
       categories: [],
       isEditing: false,
-      isProcessing: false
+      isProcessing: false,
+      isLoading: true
     }
   },
   methods: {
     async fetchCategories() {
       try{
+        this.isLoading = true
         const { data, status } = await adminAPI.categories.get()
         if(status === 'error') {
           throw new Error(statusText)
@@ -98,8 +103,9 @@ export default {
             nameCached: ''
           }
         })
+        this.isLoading = false
       } catch(error){
-        console.log(error)
+        cthis.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '無法取得餐廳類別，請稍後再試'

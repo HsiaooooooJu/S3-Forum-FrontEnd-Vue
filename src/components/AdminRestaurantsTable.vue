@@ -1,5 +1,6 @@
 <template>
-  <table class="table">
+  <Spinner v-if="isLoading" />
+  <table v-else class="table">
     <thead class="thead-dark">
       <tr>
         <th scope="col">
@@ -28,7 +29,8 @@
             Show
           </router-link>
 
-          <router-link :to="{name: 'admin-restaurant-edit', params:{id: restaurant.id}}" class="btn btn-link">Edit</router-link>
+          <router-link :to="{name: 'admin-restaurant-edit', params:{id: restaurant.id}}" class="btn btn-link">Edit
+          </router-link>
 
           <button @click.stop.prevent="deleteRestaurant(restaurant.id)" type="button" class="btn btn-link">
             Delete
@@ -43,11 +45,17 @@
 import adminAPI from './../apis/admin'
 import { Toast } from './../utils/helpers'
 
+import Spinner from '../components/Spinner.vue'
+
 export default {
   name: 'AdminRestaurantsTable',
+  components: {
+    Spinner
+  },
   data() {
     return {
-      restaurants: []
+      restaurants: [],
+      isLoading: true
     }
   },
   created() {
@@ -55,13 +63,25 @@ export default {
   },
   methods: {
     async fetchRestaurants() {
-      const { data } = await adminAPI.restaurants.get()
-      this.restaurants = data.restaurants
+      try {
+        const { data } = await adminAPI.restaurants.get()
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        this.restaurants = data.restaurants
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳，請稍後再試'
+        })
+      }
     },
     async deleteRestaurant(restaurantId) {
       try {
         const { data } = await adminAPI.restaurants.delete({ restaurantId })
-        if(data.status === 'error') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
         this.restaurants = this.restaurants.filter(
@@ -71,7 +91,7 @@ export default {
           icon: 'success',
           title: '刪除餐廳成功'
         })
-      } catch(error) {
+      } catch (error) {
         Toast.fire({
           icon: 'error',
           title: '無法刪除餐廳，請稍後再試'

@@ -12,18 +12,20 @@
         </p>
       </div>
       <div class="card-footer">
-        <button v-if="restaurant.isFavorited" @click.stop.prevent="deleteFav(restaurant.id)" type="button"
-          class="btn btn-danger btn-border favorite mr-2">
+        <button :disabled="isProcessing" v-if="restaurant.isFavorited" @click.stop.prevent="deleteFav(restaurant.id)"
+          type="button" class="btn btn-danger btn-border favorite mr-2">
           移除最愛
         </button>
-        <button v-else @click.stop.prevent="addFav(restaurant.id)" type="button" class="btn btn-main btn-border favorite mr-2">
+        <button :disabled="isProcessing" v-else @click.stop.prevent="addFav(restaurant.id)" type="button"
+          class="btn btn-main btn-border favorite mr-2">
           加到最愛
         </button>
-        <button v-if="restaurant.isLiked" @click.stop.prevent="deleteLike(restaurant.id)" type="button"
-          class="btn btn-danger like mr-2">
+        <button :disabled="isProcessing" v-if="restaurant.isLiked" @click.stop.prevent="deleteLike(restaurant.id)"
+          type="button" class="btn btn-danger like mr-2">
           Unlike
         </button>
-        <button v-else @click.stop.prevent="addLike(restaurant.id)" type="button" class="btn btn-main like mr-2">
+        <button :disabled="isProcessing" v-else @click.stop.prevent="addLike(restaurant.id)" type="button"
+          class="btn btn-main like mr-2">
           Like
         </button>
       </div>
@@ -48,15 +50,17 @@ export default {
   },
   data() {
     return {
-      restaurant: this.initialRestaurant
+      restaurant: this.initialRestaurant,
+      isProcessing: false
     }
   },
   methods: {
     async addFav(restaurantId) {
       try {
+        this.isProcessing = true
         const { data } = await usersAPI.addFav({ restaurantId })
         // 若請求過程有錯，則進到錯誤處理
-        if(data.status !== 'success') {
+        if (data.status !== 'success') {
           throw new Error(data.message)
         }
         // console.log(data)
@@ -65,7 +69,9 @@ export default {
           ...this.restaurant,  // 解構賦值
           isFavorited: true
         }
-      } catch(error) {
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法將餐廳加入最愛，請稍後再試'
@@ -74,6 +80,7 @@ export default {
     },
     async deleteFav(restaurantId) {
       try {
+        this.isProcessing = true
         const { data } = await usersAPI.delFav({ restaurantId })
         if (data.status !== 'success') {
           throw new Error(data.message)
@@ -82,7 +89,9 @@ export default {
           ...this.restaurant,
           isFavorited: false
         }
-      } catch(error) {
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法將餐廳移除最愛，請稍後再試'
@@ -91,16 +100,19 @@ export default {
     },
     async addLike(restaurantId) {
       try {
+        this.isProcessing = true
         const { data } = await usersAPI.addLike({ restaurantId })
- 
-        if(data.status === 'error') {
+
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
         this.restaurant = {
           ...this.restaurant,
           isLiked: true
         }
-      } catch(error) {
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法對餐廳按讚，請稍後再試'
@@ -109,15 +121,18 @@ export default {
     },
     async deleteLike(restaurantId) {
       try {
+        this.isProcessing = true
         const { data } = await usersAPI.delLike({ restaurantId })
-        if(data.status === 'error') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
         this.restaurant = {
           ...this.restaurant,
           isLiked: false
         }
-      } catch(error) {
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法對餐廳取消讚，請稍後再試'

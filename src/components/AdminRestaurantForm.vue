@@ -1,5 +1,6 @@
 <template>
-  <form v-show="!isLoading" @submit.stop.prevent="handleSubmit">
+  <Spinner v-if="isLoading" />
+  <form v-show="!isLoading" v-else @submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input v-model="restaurant.name" id="name" type="text" class="form-control" name="name" placeholder="Enter name"
@@ -62,8 +63,13 @@
 import adminAPI from './../apis/admin'
 import { Toast } from './../utils/helpers'
 
+import Spinner from './../components/Spinner'
+
 export default {
   name: 'AdminRestaurantForm',
+  components: {
+    Spinner
+  },
   props: {
     initialRestaurant: {
       type: Object,

@@ -1,21 +1,23 @@
 <template>
   <div class="container py-5">
-    <h1>餐廳描述頁</h1>
-    <!-- 餐廳資訊頁 RestaurantDetail -->
-    <RestaurantDetail :initial-restaurant="restaurant" />
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <h1>餐廳描述頁</h1>
+      <!-- 餐廳資訊頁 RestaurantDetail -->
+      <RestaurantDetail :initial-restaurant="restaurant" />
 
-    <hr>
-    <!-- 餐廳評論 RestaurantComments -->
-    <h2 class="my-4">
-      所有評論：
-    </h2>
-    <!-- 父元件監聽子元件事件 @after-delete-comment="afterDeleteComment"，若事件發生了，執行 afterDeleteComment -->
-    <RestaurantComments :restaurant-comments="comment" v-for="comment in restaurantComments" :key="comment.id"
-      @after-delete-comment="afterDeleteComment" />
+      <hr>
+      <!-- 餐廳評論 RestaurantComments -->
+      <h2 class="my-4">
+        所有評論：
+      </h2>
+      <!-- 父元件監聽子元件事件 @after-delete-comment="afterDeleteComment"，若事件發生了，執行 afterDeleteComment -->
+      <RestaurantComments :restaurant-comments="comment" v-for="comment in restaurantComments" :key="comment.id"
+        @after-delete-comment="afterDeleteComment" />
 
-    <!-- 新增評論 CreateComment -->
-    <CreateComments :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
-
+      <!-- 新增評論 CreateComment -->
+      <CreateComments :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
+    </template>
   </div>
 </template>
 
@@ -30,12 +32,15 @@ import { Toast } from './../utils/helpers'
 
 import { mapState } from 'vuex'
 
+import Spinner from './../components/Spinner.vue'
+
 export default {
   name: "Restaurant",
   components: {
     RestaurantDetail,
     RestaurantComments,
-    CreateComments
+    CreateComments,
+    Spinner
   },
   data() {
     return {
@@ -52,10 +57,11 @@ export default {
         isLiked: false
       },
       restaurantComments: [],
+      isLoading: true
     }
   },
   computed: {
-    ...mapState([ 'currentUser' ])
+    ...mapState(['currentUser'])
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params
@@ -65,6 +71,7 @@ export default {
   methods: {
     async fetchRestaurant(restaurantId) {
       try {
+        this.isLoading = true
         const { data } = await restaurantsAPI.getRestaurant({ restaurantId })
         const { restaurant, isFavorited, isLiked } = data
         const {
@@ -92,7 +99,9 @@ export default {
           isLiked
         };
         this.restaurantComments = Comments;
-      } catch(error) {
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '無法取得餐廳資料，請稍後再試'
