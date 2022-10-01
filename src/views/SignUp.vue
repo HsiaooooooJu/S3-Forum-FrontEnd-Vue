@@ -31,7 +31,7 @@
           placeholder="Password" autocomplete="new-password" required>
       </div>
 
-      <button :disabled="isProcessing" class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button :disabled="isProcessing" class="btn btn-lg btn-main btn-block mb-3" type="submit">
         {{ isProcessing ? 'Processing...' : 'Submit' }}
       </button>
 

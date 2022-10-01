@@ -14,7 +14,7 @@
           class="form-control-file">
       </div>
 
-      <button :disabled="isProcessing" type="submit" class="btn btn-primary">
+      <button :disabled="isProcessing" type="submit" class="btn btn-main">
         {{ isProcessing? '處理中...' : 'Submit' }}
       </button>
     </form>

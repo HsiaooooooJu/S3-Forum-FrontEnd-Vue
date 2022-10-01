@@ -6,7 +6,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <button type="button" class="btn btn-link" @click="$router.back()">回上一頁</button>
-      <button :disabled="isProcessing" type="submit" class="btn btn-primary mr-0">
+      <button :disabled="isProcessing" type="submit" class="btn btn-main mr-0">
         Submit
       </button>
     </div>
@@ -80,3 +80,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.form-group {
+  margin: 21px 0 8px;
+}
+</style>

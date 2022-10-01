@@ -16,14 +16,14 @@
           class="btn btn-danger btn-border favorite mr-2">
           移除最愛
         </button>
-        <button v-else @click.stop.prevent="addFav(restaurant.id)" type="button" class="btn btn-primary btn-border favorite mr-2">
+        <button v-else @click.stop.prevent="addFav(restaurant.id)" type="button" class="btn btn-main btn-border favorite mr-2">
           加到最愛
         </button>
         <button v-if="restaurant.isLiked" @click.stop.prevent="deleteLike(restaurant.id)" type="button"
           class="btn btn-danger like mr-2">
           Unlike
         </button>
-        <button v-else @click.stop.prevent="addLike(restaurant.id)" type="button" class="btn btn-primary like mr-2">
+        <button v-else @click.stop.prevent="addLike(restaurant.id)" type="button" class="btn btn-main like mr-2">
           Like
         </button>
       </div>
@@ -127,3 +127,35 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.badge.badge-secondary {
+  padding: 0;
+  margin: 8px 0;
+  color: #bd2333;
+  background-color: transparent;
+}
+
+.btn,
+.btn-border.btn:hover {
+  margin: 7px 14px 7px 0;
+}
+
+.card {
+  margin-bottom: 2rem !important;
+}
+
+.card-img-top {
+  background-color: #EFEFEF;
+}
+
+.card-body {
+  padding: 17.5px;
+}
+
+.card-footer {
+  padding: 9px 17.5px;
+  border-color: rgb(232, 232, 232);
+  background: white;
+}
+</style>

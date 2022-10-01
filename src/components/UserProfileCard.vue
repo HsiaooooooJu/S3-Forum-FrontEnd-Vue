@@ -19,7 +19,7 @@
           <p>
             <template v-if="isCurrentUser">
               <router-link :to="{name: 'user-edit', params: {id: user.id}}">
-                <button type="submit" class="btn btn-primary">edit
+                <button type="submit" class="btn btn-main">edit
                 </button>
               </router-link>
             </template>
@@ -27,7 +27,7 @@
               <button v-if="isFollowed" @click.prevent.stop="unfollow(user.id)" type="button" class="btn btn-danger">
                 取消追蹤
               </button>
-              <button v-else @click.prevent.stop="follow(user.id)" class="btn btn-primary">
+              <button v-else @click.prevent.stop="follow(user.id)" class="btn btn-main">
                 追蹤
               </button>
             </template>

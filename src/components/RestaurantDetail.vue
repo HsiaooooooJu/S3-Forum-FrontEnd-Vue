@@ -29,7 +29,7 @@
     <div class="col-lg-8">
       <!-- <p>{{ restaurant.description }}</p> -->
       <p>{{  restaurant.description  }}</p>
-      <router-link class="btn btn-primary btn-border mr-2"
+      <router-link class="btn btn-main btn-border mr-2"
         :to="{ name: 'restaurant-dashboard', params: { id: restaurant.id } }">
         Dashboard</router-link>
 
@@ -37,14 +37,14 @@
         class="btn btn-danger btn-border mr-2">
         移除最愛
       </button>
-      <button v-else @click.stop.prevent="addFav(restaurant.id)" type="button" class="btn btn-primary btn-border mr-2">
+      <button v-else @click.stop.prevent="addFav(restaurant.id)" type="button" class="btn btn-main btn-border mr-2">
         加到最愛
       </button>
       <button v-if="restaurant.isLiked" @click.stop.prevent="deleteLike(restaurant.id)" type="button"
         class="btn btn-danger like mr-2">
         Unlike
       </button>
-      <button v-else @click.stop.prevent="addLike(restaurant.id)" type="button" class="btn btn-primary like mr-2">
+      <button v-else @click.stop.prevent="addLike(restaurant.id)" type="button" class="btn btn-main like mr-2">
         Like
       </button>
     </div>
@@ -159,3 +159,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.col-lg-8 p,
+.contact-info-wrap li,
+.contact-info-wrap strong {
+  font-family: serif;
+  font-size: 17px;
+}
+</style>

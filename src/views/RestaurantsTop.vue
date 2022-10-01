@@ -23,13 +23,13 @@
             <p class="card-text">
               {{  restaurant.description  }}
             </p>
-            <a href="#" class="btn btn-primary mr-2">Show</a>
+            <a href="#" class="btn btn-main mr-2">Show</a>
 
             <button v-if="restaurant.isFavorited" @click.prevent.stop="deleteFav(restaurant.id)" type="button"
               class="btn btn-danger mr-2">
               移除最愛
             </button>
-            <button v-else @click.prevent.stop="addFav(restaurant.id)" type="button" class="btn btn-primary">
+            <button v-else @click.prevent.stop="addFav(restaurant.id)" type="button" class="btn btn-main">
               加到最愛
             </button>
           </div>

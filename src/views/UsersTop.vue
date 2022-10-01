@@ -16,7 +16,7 @@
           <button v-if="user.isFollowed" @click.stop.prevent="unfollow(user.id)" type="button" class="btn btn-danger">
             取消追蹤
           </button>
-          <button v-else @click.stop.prevent="follow(user.id)" type="button" class="btn btn-primary">
+          <button v-else @click.stop.prevent="follow(user.id)" type="button" class="btn btn-main">
             追蹤
           </button>
         </p>
@@ -27,14 +27,6 @@
 
 <script>
 import NavTabs from '../components/NavTabs.vue'
-
-// const dummyData = {
-//   'users': [
-//     {"image": 'https://i.pinimg.com/564x/f6/28/59/f6285991eda4499cbba7af4dc161e83c.jpg'},
-//     {"image": 'https://i.pinimg.com/564x/43/85/5c/43855c0004d8e3df52eac898321b9572.jpg'},
-//     {"image": 'https://i.pinimg.com/564x/22/d6/a2/22d6a24a91c52c2025f302b3a568d61e.jpg'}
-//   ]
-// }
 
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'

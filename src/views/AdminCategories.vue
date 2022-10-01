@@ -9,7 +9,7 @@
           <input v-model="newCategoryName" type="text" class="form-control" placeholder="新增餐廳類別...">
         </div>
         <div class="col-auto">
-          <button :disabled="isProcessing" @click.stop.prevent="createCategory" type="button" class="btn btn-primary">
+          <button :disabled="isProcessing" @click.stop.prevent="createCategory" type="button" class="btn btn-main">
             新增
           </button>
         </div>
