@@ -14,20 +14,21 @@
         style="max-width: 540px;margin: auto;">
         <div class="row no-gutters">
           <div class="col-md-4">
-            <a href="#">
+            <router-link :to="{name: 'restaurant', params: {id: restaurant.id}}">
               <img class="card-img" :src="restaurant.image">
-            </a>
+            </router-link>
           </div>
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">
-                {{  restaurant.name  }}
+                {{ restaurant.name }}
               </h5>
-              <span class="badge badge-secondary">收藏數：{{  restaurant.FavoriteCount  }}</span>
+              <span class="badge badge-secondary">收藏數：{{ restaurant.FavoriteCount }}</span>
               <p class="card-text">
-                {{  restaurant.description  }}
+                {{ restaurant.description }}
               </p>
-              <a href="#" class="btn btn-main mr-2">Show</a>
+              <router-link :to="{name: 'restaurant', params: {id: restaurant.id}}" class="btn btn-main mr-2">Show
+              </router-link>
 
               <button v-if="restaurant.isFavorited" @click.prevent.stop="deleteFav(restaurant.id)" type="button"
                 class="btn btn-danger mr-2">
@@ -73,7 +74,7 @@ export default {
         const { data } = await restaurantsAPI.getTopRestaurants()
         this.restaurants = data.restaurants
         this.isLoading = false
-      } catch(error) {
+      } catch (error) {
         this.isLoading = false
         Toast.fire({
           icon: 'error',
@@ -85,7 +86,7 @@ export default {
       try {
         const { data } = await usersAPI.addFav({ restaurantId })
         console.log(data)
-        if(data.status === 'error') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
         this.restaurants = this.restaurants.map(restaurant => {
@@ -102,7 +103,7 @@ export default {
         // Arrays of objects can be sorted by comparing the value of one of their properties
         // favoriteCount 多的會排在上面
 
-      } catch(error) {
+      } catch (error) {
         console.log(error)
         Toast.fire({
           icon: 'error',
@@ -113,7 +114,7 @@ export default {
     async deleteFav(restaurantId) {
       try {
         const { data } = await usersAPI.delFav({ restaurantId })
-        if(data.status === 'error') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
         this.restaurants = this.restaurants.map(restaurant => {
@@ -127,7 +128,7 @@ export default {
             }
           }
         }).sort((a, b) => b.FavoriteCount - a.FavoriteCount)
-      } catch(error) {
+      } catch (error) {
         Toast.fire({
           icon: 'error',
           title: '無法將餐廳移除最愛，請稍後再試'
