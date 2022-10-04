@@ -1,4 +1,7 @@
 # forum-front-end-vue
+Note: You need to use your own API server to this project.
+<br>
+[Forum-express database](https://github.com/ALPHACamp/forum-express)
 
 ## Project setup
 ```
